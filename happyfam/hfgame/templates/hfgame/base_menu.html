@@ -1,0 +1,35 @@
+{% extends 'base_bootstrap.html' %}
+{% block navbar %}
+<!-- https://www.w3schools.com/booTsTrap/bootstrap_navbar.asp -->
+<nav class="navbar navbar-default navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="/">{{ settings.APP_NAME }}</a>
+    </div>
+    <!-- https://stackoverflow.com/questions/22047251/django-dynamically-get-view-url-and-check-if-its-the-current-page -->
+    <ul class="nav navbar-nav">
+      <li {% if request.get_full_path == 'agame_list' %} class="active"{% endif %}>
+          <a href="{% url 'agame_list' %}">Happy Family Game</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+        {% if user.is_authenticated %}
+        <li>
+        <a href="{% url 'game_create' %}">Create a New Game</a>
+        </li>
+        <li class="dropdown">
+            <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                {{user.first_name}}<b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="{% url 'logout' %}?next={% url 'agame_list' %}">Logout</a></li>
+            </ul>
+        </li>
+        {% else %}
+        <li>
+        <a href="{% url 'login' %}?next={% url 'agame_list' %}">Login</a>
+        </li>
+        {% endif %}
+    </ul>
+  </div>
+</nav>
+{% endblock %}

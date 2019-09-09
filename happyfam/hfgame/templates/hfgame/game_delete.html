@@ -1,0 +1,11 @@
+{% extends "hfgame/base_menu.html" %}
+{% block content %}
+<h1>Delete Game</h1>
+
+<p>Are you sure you want to delete the game: {{ game }}?</p>
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <input type="submit" value="Yes, delete.">
+</form>
+{% endblock %}

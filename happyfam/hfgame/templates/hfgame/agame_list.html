@@ -1,0 +1,31 @@
+{% extends "hfgame/base_menu.html" %}
+{% load humanize %}
+{% block content %}
+<h1>Games Open for Names</h1>
+<p>
+{% if game_list %}
+<ul>
+  {% for game in game_list %}
+    <li>
+        <a href="{% url 'game_detail' game.id %}">{{ game.text }}</a> - created at {{ game.created_at|naturaltime }}
+        {% if game.owner == user %}
+        (<a href="{% url 'game_update' game.id %}">Edit</a> |
+        <a href="{% url 'game_delete' game.id %}">Delete</a>)
+        </p>
+        {% endif %}
+    </li>
+  {% endfor %}
+</ul>
+{% else %}
+  <p>There are no games open for names at this time.</p>
+{% endif %}
+</p>
+<p>
+<a href="{% url 'game_create' %}">Create a New Game</a> |
+{% if user.is_authenticated %}
+<a href="{% url 'logout' %}?next={% url 'agame_list' %}">Logout</a>
+{% else %}
+<a href="{% url 'login' %}?next={% url 'agame_list' %}">Login</a>
+{% endif %}
+</p>
+{% endblock %}

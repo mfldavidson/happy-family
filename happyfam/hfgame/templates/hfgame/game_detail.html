@@ -1,0 +1,59 @@
+{% extends "hfgame/base_menu.html" %}
+{% load humanize %} <!-- https://docs.djangoproject.com/en/2.1/ref/contrib/humanize -->
+{% load crispy_forms_tags %}
+{% block content %}
+<span style="float: right;">
+({{ game.updated_at|naturaltime }})
+
+{% if game.owner == user %}
+
+<a href="{% url 'game_update' game.id %}"><i class="fa fa-pencil"></i></a>
+<a href="{% url 'game_delete' game.id %}"><i class="fa fa-trash"></i></a>
+
+<form method="post" action="{% url 'game_status' game.id %}">
+    {% csrf_token %}
+    {{ status_form|crispy }}
+<input type="submit" value="Submit">
+</form>
+
+{% endif %}
+
+</span>
+<h1>{{ game.name }}</h1>
+<p>
+Created by {{ user.first_name }} {{ user.last_name }} at {{ game.created_at|naturaltime }}.
+</p>
+<p>
+  {% if user.is_authenticated %}
+  <br clear="all"/>
+  <p>
+    {% if not game.status == 'a' %}
+      This game is no longer accepting names. The current status of this game is: {{ game.get_status_display }}.
+    {% else %}
+    {% if name_exists %}
+      You have already submitted the name {{ name_exists }} for this game. You can <a href ="{% url 'name_delete' name_exists.id %}">delete</a> this name to post another if you want.
+    {% else %}
+      <form method="post" action="{% url 'name_create' game.id %}">
+          {% csrf_token %}
+          {{ name_form|crispy }}
+      <input type="submit" value="Submit">
+      </form>
+    {% endif %}{% endif %}
+  </p>
+  {% endif %}
+  <ul>
+  {% for name in names %}
+  <li>
+    {{ name.text }}
+  {% if name.owner == user %}
+  <a href="{% url 'name_delete' name.id %}"><i class="fa fa-trash"></i></a>
+  {% endif %}
+  </li>
+  {% endfor %}
+  </ul>
+<p>
+</p>
+<p>
+<a href="{% url 'agame_list' %}">All games currently accepting names</a>
+</p>
+{% endblock %}
