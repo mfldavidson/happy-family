@@ -1,4 +1,4 @@
-{% extends "base_menu.html" %}
+{% extends "hfgame/base_menu.html" %}
 
 {% block content %}
 
@@ -11,25 +11,44 @@
     <p>Your account doesn't have access to this page. To proceed,
     please login with an account that has access.</p>
   {% else %}
-    <p>Please login to see this site.</p>
+    <p>Please login to see this page.</p>
   {% endif %}
 {% endif %}
 
 {% load crispy_forms_tags %}
+<hr/>
+You must login with GitHub or Google. You must have one of these accounts to use {{ settings.APP_NAME }}. This allows us to avoid storing your password for your security.
+<br/><br/>
 
+<!-- GitHub authentication -->
+{% if settings.SOCIAL_AUTH_GITHUB_KEY %}
+<a class="btn btn-info" role="button" href="{% url 'social:begin' 'github' %}?next={{ next }}">
+    <i class="fa fa-github" aria-hidden="true"></i>
+    Login with GitHub</a>
+
+{% else %}
+You cannot log in to {{ settings.APP_NAME }} with GitHub right now.
+{% endif %}
+
+<!-- Google authentication -->
+{% if settings.SOCIAL_AUTH_GOOGLE_OAUTH2_KEY %}
+<a class="btn btn-info" role="button" href="{% url 'social:begin' 'google-oauth2' %}?next={{ next }}">
+    <i class="fa fa-google" aria-hidden="true"></i>
+    Login with Google</a>
+
+{% else %}
+You cannot log in to {{ settings.APP_NAME }} with Google right now.
+{% endif %}
+
+<!-- Local login (for admins only) -->
+<hr/>
+<h5>Administrator Login Only</h5>
 <form method="post" action="{% url 'login' %}">
 {% csrf_token %}
 {{ form|crispy }}
 <input type="submit" class="btn btn-primary" value="Login Locally" />
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
-
-{% if settings.SOCIAL_AUTH_GITHUB_KEY %}
-<hr/>
-<a class="btn btn-info" role="button" href="{% url 'social:begin' 'github' %}?next={{ next }}">
-    <i class="fa fa-github" aria-hidden="true"></i>
-    Login with GitHub</a>
-{% endif %}
 
 <!-- ROOT_URLCONF {{ settings.ROOT_URLCONF }} -->
 
