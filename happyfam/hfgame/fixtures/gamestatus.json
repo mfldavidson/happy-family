@@ -1,0 +1,23 @@
+[
+  {
+    "model": "hfgame.GameStatus",
+    "pk": 1,
+    "fields": {
+      "short": "a",
+      "long": "Accepting Names"}
+  },
+  {
+    "model": "hfgame.GameStatus",
+    "pk": 2,
+    "fields": {
+      "short": "p",
+      "long": "In Play"}
+  },
+  {
+      "model": "hfgame.GameStatus",
+      "pk": 3,
+      "fields": {
+        "short": "d",
+        "long": "Done"}
+  }
+]

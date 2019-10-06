@@ -27,11 +27,11 @@ Created by {{ user.first_name }} {{ user.last_name }} at {{ game.created_at|natu
   {% if user.is_authenticated %}
   <br clear="all"/>
   <p>
-    {% if not game.status == 'a' %}
-      This game is no longer accepting names. The current status of this game is: {{ game.get_status_display }}.
+    {% if not game.status.short == 'a' %}
+      This game is no longer accepting names. The current status of this game is: {{ game.status.long }}.
     {% else %}
     {% if name_exists %}
-      You have already submitted the name {{ name_exists }} for this game. You can <a href ="{% url 'name_delete' name_exists.id %}">delete</a> this name to post another if you want.
+      You can only submit one name per game, and you have already submitted the name {{ name_exists }} for this game. You can <a href ="{% url 'name_delete' name_exists.id %}">delete</a> this name to post another if you want.
     {% else %}
       <form method="post" action="{% url 'name_create' game.id %}">
           {% csrf_token %}

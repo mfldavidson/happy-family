@@ -13,7 +13,7 @@ class AGamesListView(OwnerListView):
     template_name = "agame_list.html"
 
     def get(self, request) :
-        game_list = Game.objects.filter(status='a').order_by('-updated_at').all()
+        game_list = Game.objects.filter(status=1).order_by('-updated_at').all()
         ctx = {'game_list': game_list}
         return render(request, self.template_name, ctx)
 

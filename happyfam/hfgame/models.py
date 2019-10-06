@@ -3,28 +3,37 @@ from django.core.validators import MinLengthValidator
 from django.contrib.auth.models import User
 from django.conf import settings
 
-class Game(models.Model):
-    # choices for status
-    STATUS_CHOICES = [
-    ('a', 'Accepting Names'),
-    ('p', 'In Play'),
-    ('d', 'Done')
-    ]
+class GameStatus(models.Model):
+    short = models.CharField(
+            max_length=1,
+            validators=[MinLengthValidator(1, 'Name must be greater than 1 character')]
+            )
+    long = models.CharField(
+            max_length=25,
+            validators=[MinLengthValidator(3, 'Name must be greater than 3 characters')]
+            )
 
-    # model fields
+    def __repr__(self):
+        return self.short
+
+    def __str__(self):
+        return self.long
+
+class Game(models.Model):
     text = models.CharField(
-            max_length=100,
-            validators=[MinLengthValidator(5, 'Name must be greater than 5 characters')],
-            verbose_name='Name of the Game'
+        max_length=100,
+        validators=[MinLengthValidator(5, 'Name must be greater than 5 characters')],
+        verbose_name='Name of the Game'
         )
     descr = models.TextField(
         verbose_name='Game Description (if applicable)',
+        blank=True,
         null=True
         )
-    status = models.CharField(
-        choices=STATUS_CHOICES,
-        default='a',
-        max_length=25
+    status = models.ForeignKey(
+        GameStatus,
+        on_delete=models.CASCADE,
+        default=1
         )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
