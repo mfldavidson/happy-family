@@ -102,3 +102,12 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# social settings
+social_settings.py
+
+# secret key
+secret_key.py
+
+# DS_Store files
+.DS_Store
