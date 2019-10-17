@@ -22,6 +22,7 @@ class OwnerCreateView(LoginRequiredMixin, CreateView):
         print('form_valid called')
         object = form.save(commit=False)
         object.owner = self.request.user
+        object.creator = self.request.user
         object.save()
         return super(OwnerCreateView, self).form_valid(form)
 

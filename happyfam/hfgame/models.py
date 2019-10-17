@@ -32,17 +32,26 @@ class Game(models.Model):
         )
     status = models.ForeignKey(
         GameStatus,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_DEFAULT,
         default=1
         )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     # affiliated users
+    creator = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        related_name='games_created',
+        default=None,
+        null=True
+        )
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='games_owned'
+        on_delete=models.SET_NULL,
+        related_name='games_owned',
+        default=None,
+        null=True
         )
     players = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
@@ -50,7 +59,7 @@ class Game(models.Model):
         )
     winner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name='games_won',
         default=None,
         blank=True,

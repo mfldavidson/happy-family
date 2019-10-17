@@ -84,6 +84,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'happyfam.wsgi.application'
 
+SESSION_COOKIE_SAMESITE = None
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases

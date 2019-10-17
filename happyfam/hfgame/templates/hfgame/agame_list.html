@@ -7,7 +7,7 @@
 <ul>
   {% for game in game_list %}
     <li>
-        <a href="{% url 'game_detail' game.id %}">{{ game.text }}</a> - created at {{ game.created_at|naturaltime }}
+        <a href="{% url 'game_detail' game.id %}">{{ game.text }}</a> - created {{ game.created_at|naturaltime }} by {% if game.creator.first_name %}{{ game.creator.first_name }} {{ game.creator.last_name }}{% else %}{{ game.creator.username }}{% endif %}
         {% if game.owner == user %}
         (<a href="{% url 'game_update' game.id %}">Edit</a> |
         <a href="{% url 'game_delete' game.id %}">Delete</a>)

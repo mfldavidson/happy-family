@@ -9,11 +9,11 @@
     <!-- https://stackoverflow.com/questions/22047251/django-dynamically-get-view-url-and-check-if-its-the-current-page -->
     <ul class="nav navbar-nav">
       <li {% if request.get_full_path == 'agame_list' %} class="active"{% endif %}>
-          <a href="{% url 'agame_list' %}">Happy Family Game</a></li>
+          <a href="{% url 'agame_list' %}">All Games Open for Names</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
-        <li>
+        <li {% if request.get_full_path == 'game_create' %} class="active"{% endif %}>
         <a href="{% url 'game_create' %}">Create a New Game</a>
         </li>
         <li class="dropdown">

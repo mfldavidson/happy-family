@@ -1,12 +1,52 @@
 {% extends "hfgame/base_menu.html" %}
 {% load humanize %} <!-- https://docs.djangoproject.com/en/2.1/ref/contrib/humanize -->
 {% load crispy_forms_tags %}
+{% block head %}
+{{ block.super }}
+<script>
+    // function that hides/shows id_winner based upon id_status value--source https://stackoverflow.com/questions/32875751/display-form-field-based-on-other-fields-within-the-django-form
+    function check_field_value() {
+        if($(this).val() == 3) {
+            $('#div_id_winner').show();
+        } else {
+            $('#div_id_winner').hide();
+        }
+    }
+
+    // this is executed once when the page loads
+    $(document).ready(function() {
+
+        // call function when id_status changes
+        $('#id_status').change(check_field_value);
+
+        // call the function and check the field value of #id_status
+        check_field_value.call($('#id_status').get(0));
+        });
+
+
+</script>{% endblock %}
+
 {% block content %}
-<span style="float: right;">
-({{ game.updated_at|naturaltime }})
+<span style="float: right; width: 25%">
+Last updated {{ game.updated_at|naturaltime }}
 
 {% if game.owner == user %}
+{% if game.status.short != 'd' %}
+|
+<a href="{% url 'game_update' game.id %}"><i class="fa fa-pencil"></i></a>
+<a href="{% url 'game_delete' game.id %}"><i class="fa fa-trash"></i></a>
 
+<form method="post" action="{% url 'game_status' game.id %}">
+    {% csrf_token %}
+    {{ status_form|crispy }}
+<input type="submit" value="Submit">
+</form>
+
+{% else %}
+<br/><br/>
+<p>Games cannot be edited or deleted once the status is 'Done'.</p>
+
+|
 <a href="{% url 'game_update' game.id %}"><i class="fa fa-pencil"></i></a>
 <a href="{% url 'game_delete' game.id %}"><i class="fa fa-trash"></i></a>
 
@@ -17,21 +57,30 @@
 </form>
 
 {% endif %}
+{% endif %}
 
 </span>
-<h1>{{ game.name }}</h1>
+
+<h1>{{ game.text }}</h1>
 <p>
-Created by {{ user.first_name }} {{ user.last_name }} at {{ game.created_at|naturaltime }}.
+  Created by {{ user.first_name }} {{ user.last_name }} {{ game.created_at|naturaltime }}.
 </p>
+
+<p>
+  {{ game.descr }}
+</p>
+
 <p>
   {% if user.is_authenticated %}
   <br clear="all"/>
+  <hr/>
+  <h2>Names</h2>
   <p>
     {% if not game.status.short == 'a' %}
       This game is no longer accepting names. The current status of this game is: {{ game.status.long }}.
     {% else %}
     {% if name_exists %}
-      You can only submit one name per game, and you have already submitted the name {{ name_exists }} for this game. You can <a href ="{% url 'name_delete' name_exists.id %}">delete</a> this name to post another if you want.
+      You have already submitted the name <strong>{{ name_exists }}</strong> for this game. You can only submit one name per game; you can <a href ="{% url 'name_delete' name_exists.id %}">delete</a> this name to post another if you want.
     {% else %}
       <form method="post" action="{% url 'name_create' game.id %}">
           {% csrf_token %}
@@ -41,6 +90,8 @@ Created by {{ user.first_name }} {{ user.last_name }} at {{ game.created_at|natu
     {% endif %}{% endif %}
   </p>
   {% endif %}
+
+  {% if game.owner == user %}
   <ul>
   {% for name in names %}
   <li>
@@ -51,9 +102,5 @@ Created by {{ user.first_name }} {{ user.last_name }} at {{ game.created_at|natu
   </li>
   {% endfor %}
   </ul>
-<p>
-</p>
-<p>
-<a href="{% url 'agame_list' %}">All games currently accepting names</a>
-</p>
+  {% endif %}
 {% endblock %}
