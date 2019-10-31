@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -53,17 +54,11 @@ class Game(models.Model):
         default=None,
         null=True
         )
-    players = models.ManyToManyField(
+    winner = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
-        related_name='games_played'
-        )
-    winner = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.SET_NULL,
         related_name='games_won',
         default=None,
-        blank=True,
-        null=True
+        blank=True
         )
 
     # Shows up in the admin list
