@@ -6,10 +6,12 @@
 <script>
     // function that hides/shows id_winner based upon id_status value--source https://stackoverflow.com/questions/32875751/display-form-field-based-on-other-fields-within-the-django-form
     function check_field_value() {
-        if($(this).val() == 3) {
-            $('#div_id_winner').show();
+        if($(this).val() == '') {
+            $('#submit_status').hide();
+            $('#winner_help').show();
         } else {
-            $('#div_id_winner').hide();
+            $('#submit_status').show();
+            $('#winner_help').hide();
         }
     }
 
@@ -17,10 +19,10 @@
     $(document).ready(function() {
 
         // call function when id_status changes
-        $('#id_status').change(check_field_value);
+        $('#id_winner').change(check_field_value);
 
         // call the function and check the field value of #id_status
-        check_field_value.call($('#id_status').get(0));
+        check_field_value.call($('#id_winner').get(0));
         });
 
 
@@ -36,27 +38,29 @@ Last updated {{ game.updated_at|naturaltime }}
 <a href="{% url 'game_update' game.id %}"><i class="fa fa-pencil"></i></a>
 <a href="{% url 'game_delete' game.id %}"><i class="fa fa-trash"></i></a>
 
-<form method="post" action="{% url 'game_status' game.id %}">
-    {% csrf_token %}
-    {{ status_form|crispy }}
-<input type="submit" value="Submit">
-</form>
-
-{% else %}
-<br/><br/>
-<p>Games cannot be edited or deleted once the status is 'Done'.</p>
-
-|
-<a href="{% url 'game_update' game.id %}"><i class="fa fa-pencil"></i></a>
-<a href="{% url 'game_delete' game.id %}"><i class="fa fa-trash"></i></a>
-
-<form method="post" action="{% url 'game_status' game.id %}">
-    {% csrf_token %}
-    {{ status_form|crispy }}
-<input type="submit" value="Submit">
-</form>
-
 {% endif %}
+
+<p>
+<form method="post" action="{% url 'game_detail' game.id %}">
+    {% csrf_token %}
+    {{ status_form.non_field_errors }}
+    {{ status_form.status }}
+    {% if game.status.short == 'p' %}
+    <label for="{{ form.winner.id_winner }}">Winner(s):</label>
+    {{ status_form.winner }}
+    {% if status_form.winner.errors %}<div class="alert alert-danger">
+    {{ status_form.winner.errors|striptags }}
+    </div>{% endif %}
+    {% endif %}
+<input id="submit_status" type="submit" value= {% if game.status.short == 'a' %} "Start Game" {% elif game.status.short == 'p' %} "End Game and Record Winner" {% else %} "Reopen Game" {% endif %}>
+{% if game.status.short == 'p' %}
+<p id="winner_help">
+  Please select a winner to finish the game.
+</p>
+{% endif %}
+</form>
+</p>
+
 {% endif %}
 
 </span>
@@ -91,7 +95,7 @@ Last updated {{ game.updated_at|naturaltime }}
   </p>
   {% endif %}
 
-  {% if game.owner == user %}
+  {% if game.owner == user and game.status.short == 'p' %}
   <ul>
   {% for name in names %}
   <li>
