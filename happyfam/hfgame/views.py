@@ -20,6 +20,12 @@ class AGamesListView(OwnerListView):
         context = {'game_list': game_list}
         return render(request, self.template_name, context)
 
+class HowToPlayView(View):
+    template_name = 'how_to_play.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
+
 def get_game_detail_context_data(game, user, status_form):
     ''' Function to get the context data necessary for GameDetailView that stays the same between GET and POST '''
 
