@@ -1,0 +1,34 @@
+{% extends "hfgame/base_menu.html" %}
+{% block content %}
+<h1>How to Play</h1>
+
+<p>
+  Happy Family is a party game where the objective is to end the game by having every player in your "family". Every player submits a name--this is "who they are" for the game. Other players join your family when you correctly guess who they are on your turn. As soon as a player has been guessed, they are "out" for the game, but they support their head of family by helping them guess more players to grow the family. Guessing another head of family brings that person as well as their entire family into your family. The game ends when all players have been guessed except the winner, who is now the head of one big happy family with every player in it.
+<p>
+  For instructions on playing the original party game or to see the inspiration, refer to
+</p>
+
+<h2>Happy Family App Play</h2>
+<p>
+    <strong>Requirements:</strong> Players must EITHER being physically co-located (in the same room, for example) or connected via video conference with additional ways to communicate between teammates outside of the main video conference (text, chat, breakout rooms in video conference, etc).
+</p>
+<p>
+  <strong>1. Create the game.</strong> One person should create the game using the <a href="{% url 'game_create' %}">"Create a New Game" button</a> at the upper right. Choose a name that will help the rest of the players recognize the game, and optionally add a description.
+</p>
+<div class="alert alert-info" role="alert">
+  Ideally, the person who creates the game ("Creator") should be the same person that plans to read the names off and otherwise control the game ("Owner"). However, the Owner can be changed after the game is created if another player is needed to read the names and control the game.
+</div>
+<p>
+  <strong>2. Players submit their names.</strong> All players (including the Creator/Owner if they plan to play) should submit their names to the game. Each player can only submit one name. To submit a name, click on the game in the <a href="{% url 'agame_list' %}">list of games open for names</a> and use the form to enter the name.
+</p>
+<div class="alert alert-info" role="alert">
+  If you submit a name but change your mind or notice a typo, you can do this while the game is still Accepting Names by deleting your name and submitting a new one.
+</div>
+<p>
+  <strong>3. Each player writes a name.</strong> Players should each write ONE and ONLY ONE name on ONE and ONLY ONE strip of paper each. Players should then put the name in the container determined in step 2.
+</p>
+<p>
+  <strong>4. One person reads the names.</strong> Everyone should work hard to remember the names, as remembering names is generally the difference between winning and losing the game. The person who reads the names should ideally be someone who doesn't readily recognize handwriting so as not to give them an edge over other players who cannot see the handwriting. No commentary on the names should be permitted or given. Names may be read through once OR twice; this can be decided by the group.
+</p>
+
+{% endblock %}
