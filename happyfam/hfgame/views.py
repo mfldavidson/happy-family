@@ -20,13 +20,28 @@ class AGamesListView(OwnerListView):
         context = {'game_list': game_list}
         return render(request, self.template_name, context)
 
+class HowToPlayView(View):
+    template_name = 'how_to_play.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+class OriginalGameView(View):
+    template_name = 'original_game.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
+
 def get_game_detail_context_data(game, user, status_form):
     ''' Function to get the context data necessary for GameDetailView that stays the same between GET and POST '''
 
     names = list(Name.objects.filter(game=game).all())
     shuffle(names)
     name_form = NameForm()
-    name_exists = Name.objects.filter(game=game, owner=user).first()
+    if user.is_authenticated:
+        name_exists = Name.objects.filter(game=game, owner=user).first()
+    else:
+        name_exists = False
     context = {
         'game': game,
         'status_form': status_form,

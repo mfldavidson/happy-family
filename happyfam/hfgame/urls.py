@@ -3,6 +3,8 @@ from . import views
 
 urlpatterns = [
     path('', views.AGamesListView.as_view(), name='agame_list' ),
+    path('how-to-play/', views.HowToPlayView.as_view(), name='how_to_play'),
+    path('how-to-play/original_game', views.OriginalGameView.as_view(), name='original_game'),
     path('game/<int:pk>/', views.GameDetailView.as_view(), name='game_detail'),
     path('game/create/', views.GameCreateView.as_view(), name='game_create'),
     path('game/<int:pk>/update/', views.GameUpdateView.as_view(), name='game_update'),
