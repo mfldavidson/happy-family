@@ -32,7 +32,10 @@ def get_game_detail_context_data(game, user, status_form):
     names = list(Name.objects.filter(game=game).all())
     shuffle(names)
     name_form = NameForm()
-    name_exists = Name.objects.filter(game=game, owner=user).first()
+    if user.is_authenticated:
+        name_exists = Name.objects.filter(game=game, owner=user).first()
+    else:
+        name_exists = False
     context = {
         'game': game,
         'status_form': status_form,
