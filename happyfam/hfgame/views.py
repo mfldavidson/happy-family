@@ -26,6 +26,12 @@ class HowToPlayView(View):
     def get(self, request):
         return render(request, self.template_name)
 
+class OriginalGameView(View):
+    template_name = 'original_game.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
+
 def get_game_detail_context_data(game, user, status_form):
     ''' Function to get the context data necessary for GameDetailView that stays the same between GET and POST '''
 
