@@ -52,7 +52,7 @@ Last updated {{ game.updated_at|naturaltime }}
     {{ status_form.winner.errors|striptags }}
     </div>{% endif %}
     {% endif %}
-<input id="submit_status" type="submit" value= {% if game.status.short == 'a' %} "Start Game" {% elif game.status.short == 'p' %} "End Game and Record Winner" {% else %} "Reopen Game" {% endif %}>
+<input id="submit_status" type="submit" value= {% if game.status.short == 'a' %} "Start Game and Show Names" {% elif game.status.short == 'r' %} "Hide Names and Move On to Guessing" {% elif game.status.short == 'p' %} "End Game and Record Winner" {% else %} "Reopen Game" {% endif %}>
 {% if game.status.short == 'p' %}
 <p id="winner_help">
   Please select a winner to finish the game.
@@ -84,7 +84,7 @@ Last updated {{ game.updated_at|naturaltime }}
       This game is no longer accepting names. The current status of this game is: {{ game.status.long }}.
     {% else %}
     {% if name_exists %}
-      You have already submitted the name <strong>{{ name_exists }}</strong> for this game. You can only submit one name per game; you can <a href ="{% url 'name_delete' name_exists.id %}">delete</a> this name to post another if you want.
+      You submitted the name <strong>{{ name_exists }}</strong> for this game. You can only submit one name per game; you can <a href ="{% url 'name_delete' name_exists.id %}">delete</a> this name to post another if you want.
     {% else %}
       <form method="post" action="{% url 'name_create' game.id %}">
           {% csrf_token %}
@@ -93,16 +93,16 @@ Last updated {{ game.updated_at|naturaltime }}
       </form>
     {% endif %}{% endif %}
   </p>
+  <p>
+    There are currently <strong>{{ names|length }} names</strong> in this game.
+  </p>
   {% endif %}
 
-  {% if game.owner == user and game.status.short == 'p' %}
+  {% if game.owner == user and game.status.short == 'r' %}
   <ul>
   {% for name in names %}
   <li>
-    {{ name.text }}
-  {% if name.owner == user %}
-  <a href="{% url 'name_delete' name.id %}"><i class="fa fa-trash"></i></a>
-  {% endif %}
+    {% if name.owner == user %}<strong>{% endif %}{{ name.text }}{% if name.owner == user %}</strong>{% endif %}
   </li>
   {% endfor %}
   </ul>

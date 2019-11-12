@@ -20,12 +20,4 @@
   <p>There are no games open for names at this time.</p>
 {% endif %}
 </p>
-<p>
-<a href="{% url 'game_create' %}">Create a New Game</a> |
-{% if user.is_authenticated %}
-<a href="{% url 'logout' %}?next={% url 'agame_list' %}">Logout</a>
-{% else %}
-<a href="{% url 'login' %}?next={% url 'agame_list' %}">Login</a>
-{% endif %}
-</p>
 {% endblock %}
