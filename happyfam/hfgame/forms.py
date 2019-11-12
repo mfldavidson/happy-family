@@ -31,7 +31,7 @@ class GameStatusForm(forms.ModelForm):
         winner = self.cleaned_data.get('winner')
         status = self.cleaned_data.get('status')
 
-        inplay = GameStatus.objects.get(id=2)
+        inplay = GameStatus.objects.get(id=3)
 
         if status == inplay:
             if len(winner) == 0:

@@ -74,14 +74,17 @@ class GameDetailView(View):
         else:
             # get each of the GameStatus objects
             accepting_names = GameStatus.objects.get(id=1)
-            in_play = GameStatus.objects.get(id=2)
-            done = GameStatus.objects.get(id=3)
+            reading_names = GameStatus.objects.get(id=2)
+            in_play = GameStatus.objects.get(id=3)
+            done = GameStatus.objects.get(id=4)
 
             # get the staged game object
             g = status_form.save(commit=False)
 
             # advance the staged game object's status to the next status
             if g.status == accepting_names:
+                g.status = reading_names
+            elif g.status == reading_names:
                 g.status = in_play
             elif g.status == in_play:
                 g.status = done

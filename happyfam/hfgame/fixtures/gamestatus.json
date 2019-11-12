@@ -10,12 +10,19 @@
     "model": "hfgame.GameStatus",
     "pk": 2,
     "fields": {
+      "short": "r",
+      "long": "Reading Names"}
+  },
+  {
+    "model": "hfgame.GameStatus",
+    "pk": 3,
+    "fields": {
       "short": "p",
       "long": "In Play"}
   },
   {
       "model": "hfgame.GameStatus",
-      "pk": 3,
+      "pk": 4,
       "fields": {
         "short": "d",
         "long": "Done"}
