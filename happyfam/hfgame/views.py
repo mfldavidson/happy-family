@@ -37,6 +37,7 @@ def get_game_detail_context_data(game, user, status_form):
 
     names = list(Name.objects.filter(game=game).all())
     players = User.objects.filter(name__in=names)
+    status_form.fields['winner'].queryset = players
     shuffle(names)
     name_form = NameForm()
     if user.is_authenticated:
@@ -129,6 +130,9 @@ class GameUpdateView(LoginRequiredMixin, View):
     def get(self, request, pk) :
         g = get_object_or_404(Game, id=pk, owner=self.request.user)
         form = GameUpdateForm(instance=g)
+        names = list(Name.objects.filter(game=g).all())
+        players = User.objects.filter(name__in=names)
+        form.fields['owner'].queryset = players
         context = { 'form': form }
         return render(request, self.template, context)
 
