@@ -36,6 +36,7 @@ def get_game_detail_context_data(game, user, status_form):
     ''' Function to get the context data necessary for GameDetailView that stays the same between GET and POST '''
 
     names = list(Name.objects.filter(game=game).all())
+    players = User.objects.filter(name__in=names)
     shuffle(names)
     name_form = NameForm()
     if user.is_authenticated:
@@ -47,7 +48,8 @@ def get_game_detail_context_data(game, user, status_form):
         'status_form': status_form,
         'names': names,
         'name_form': name_form,
-        'name_exists': name_exists
+        'name_exists': name_exists,
+        'players': players
         }
     return context
 
