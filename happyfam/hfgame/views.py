@@ -37,6 +37,7 @@ def get_game_detail_context_data(game, user, status_form):
 
     names = list(Name.objects.filter(game=game).all())
     players = User.objects.filter(name__in=names)
+    status_form.fields['winner'].queryset = players
     shuffle(names)
     name_form = NameForm()
     if user.is_authenticated:
